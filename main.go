@@ -32,12 +32,17 @@ func main() {
 	}
 	mysql.Ping()
 
-	sm := new(base.SqlModify).SetTable("tom_test").And("title", base.Like, "h").And("id", base.Equal, 1).Or("stat", base.Equal, 2).SetModel(Model{})
-	list, _, _ := mysql.List(sm)
+	//需要建立MySqlConn之后，才能调用MysqlQuery方法
+	list, total, err := new(base.SqlModify).SetTable("tom_test").And("title", base.Like, "h").And("id", base.Equal, 1).Or("stat", base.Equal, 2).MysqlQuery(Model{})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("total", total)
 	for _, v := range list {
 		switch v.(type) {
 		case *Model:
-			fmt.Println(v.(*Model))
+			fmt.Println("elem", v.(*Model))
 		}
 	}
 }

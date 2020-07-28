@@ -14,12 +14,6 @@ func (m *MySql) Ping() error {
 	return m.db.Ping()
 }
 
-func (m *MySql) List(sm *SqlModify) ([]interface{}, int, error) {
-	sql, val := sm.QueryList()
-	list, t, e := sm.queryList(m.db, sql, val...)
-	return sm.Out(list), t, e
-}
-
 func (m *MySql) Update(sm *SqlModify) (change int, err error) {
 	return
 }

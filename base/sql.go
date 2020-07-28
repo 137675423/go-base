@@ -56,20 +56,37 @@ func (sm *SqlModify) SetTable(table string) *SqlModify {
 	return sm
 }
 
-//设置数据模型
-func (sm *SqlModify) SetModel(DataModel interface{}) *SqlModify {
-	sm.obj = DataModel
-	return sm
-}
-
 func (sm *SqlModify) SetPage(p int) *SqlModify {
 	sm.page = p
+	//页数校正
+	if p < 1 {
+		sm.page = 1
+	}
 	return sm
 }
 
 func (sm *SqlModify) SetSize(s int) *SqlModify {
 	sm.size = s
+	//单页数量校正
+	if s < 1 || s > 100 {
+		sm.size = 10
+	}
+
 	return sm
+}
+
+func (sm *SqlModify) MysqlLimit() string {
+	return fmt.Sprintf(" limit %d offsize %d", sm.size, (sm.page-1)*sm.size)
+}
+
+//mysql查询
+func (sm *SqlModify) MysqlQuery(DataModel interface{}) ([]interface{}, int, error) {
+	//设置本次查询的数据模型
+	sm.obj = DataModel
+	sql, val := sm.QueryList()
+	sql += sm.MysqlLimit()
+	list, t, e := sm.queryList(mySqlHandle.db, sql, val...)
+	return sm.Out(list), t, e
 }
 
 //设置and条件
