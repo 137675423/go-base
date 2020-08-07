@@ -2,7 +2,11 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"os/signal"
 	"public/base"
+	"public/web"
+	"syscall"
 	"time"
 )
 
@@ -16,6 +20,31 @@ type Model struct {
 
 //例
 func main() {
+
+	sig := make(chan os.Signal, 10)
+	signal.Notify(sig)
+	go func() {
+		for s := range sig {
+			switch s {
+			case syscall.SIGINT:
+				fmt.Println("Ctrl+C Stop")
+				//关闭web服务
+				<-web.Server.Stop()
+				fmt.Println("Web Stop")
+				os.Exit(1)
+			default:
+				fmt.Println(s.String())
+			}
+
+		}
+	}()
+
+	web.Server.Listen()
+	return
+
+}
+
+func DBExample() {
 	db := new(base.DbConfig)
 	db.Host = "127.0.0.1"
 	db.Port = 3306
