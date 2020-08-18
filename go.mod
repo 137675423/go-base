@@ -1,4 +1,4 @@
-module public
+module github.com/137675423/public
 
 go 1.14
 

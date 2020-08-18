@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"public/base"
-	"public/web"
+	"github.com/137675423/public/base"
+	"github.com/137675423/public/web"
 	"time"
 )
 
