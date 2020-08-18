@@ -14,6 +14,8 @@ const (
 	EnPage = "SQL_CALC_FOUND_ROWS" //开启分页
 )
 
+//GRANT ALL ON db.* TO 'user'@'%';
+
 type SqlDiff string
 
 const (

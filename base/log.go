@@ -36,16 +36,16 @@ type Logger struct {
 	Steps []step
 }
 
-func NewLogger() Logger {
-	return Logger{
+func NewLogger() *Logger {
+	return &Logger{
 		time.Now(), nil,
 	}
 }
 
 func (l *Logger) SaveFile() {
-	str := fmt.Sprintf("LOG BEGIN\n[%v] speed %v ", l.StartTime.Format("2006-01-02 15:04:05"), time.Now().Sub(l.StartTime))
-	for _, v := range l.Steps {
-		str += fmt.Sprintf("[%v]%v\n", ShowLevel[v.level], v.content)
+	str := fmt.Sprintf("LOG BEGIN AT [%v] Cost Time %v \n", l.StartTime.Format("2006-01-02 15:04:05"), time.Now().Sub(l.StartTime))
+	for k, v := range l.Steps {
+		str += fmt.Sprintf("Step:%d | Level:%v | Events:%v\n", k+1, ShowLevel[v.level], v.content)
 	}
 	str += "LOG END"
 	fmt.Println(str)
