@@ -7,28 +7,24 @@ import (
 	"time"
 )
 
+//例
+func main() {
+	Web := web.NewWeb()
+	Web.AddRoute("/", test)
+	go Web.Listen(1210)
+	select {}
+}
+
+func test(engine *web.Engine) {
+	engine.Log.Info("DO TEST")
+}
+
 //对应数据库表结构
 type Model struct {
 	Id         int       `sql:"id"`
 	Title      string    `sql:"title"`
 	CreateTime time.Time `sql:"create_time"`
 	Stat       int       `sql:"stat"`
-}
-
-//例
-func main() {
-
-	Web := web.NewWeb()
-	Web.AddRoute("/", test)
-	go Web.Listen(1210)
-	select {}
-
-}
-
-func test(engine *web.Engine) {
-
-	time.Sleep(time.Second * 20)
-	engine.Log.Info("DO TEST")
 }
 
 func DBExample() {
